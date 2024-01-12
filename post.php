@@ -6,6 +6,7 @@ $post = [
     'image' => 'images/biomes.jpg',
 ];
 
+
 // Display individual post
 echo '<article>';
 echo '<h2>' . $post['title'] . '</h2>';
