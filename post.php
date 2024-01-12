@@ -1,22 +1,13 @@
 <link rel="stylesheet" href="style.css">
 <?php
+session_start();
 
-// Retrieve post details (you can use a database for this in a real-world scenario)
-$post = [
-    'title' => 'Exploring Minecraft Biomes',
-    'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-    'image' => 'images/biomes.jpg',
-];
+// Check if the user is logged in
+if (!isset($_SESSION['username'])) {
+    header('Location: login.php'); // Redirect to login page if not logged in
+    exit();
+}
 
-
-
-// Display individual post
-echo '<article>';
-echo '<h2>' . $post['title'] . '</h2>';
-echo '<img src="' . $post['image'] . '" alt="' . $post['title'] . '">';
-echo '<p>' . $post['content'] . '</p>';
-echo '<a href="index.php">Back to Blog</a>';
-echo '</article>';
 
 // voorbeelden van de blogs
 $posts = [
@@ -57,13 +48,28 @@ foreach ($posts as $post) {
     echo '</article>';
 } 
 
-session_start();
 
-// Check if the user is logged in
-if (!isset($_SESSION['username'])) {
-    header('Location: login.php'); // Redirect to login page if not logged in
-    exit();
+// Display comment form
+echo '<section id="comment-form">';
+echo '<h3>Add a Comment</h3>';
+echo '<form method="post" action="">';
+if (isset($_SESSION['username'])) {
+    // If logged in, use the username as the default name
+    echo '<input type="hidden" name="name" value="' . htmlspecialchars($_SESSION['username']) . '">';
+} else {
+    // If not logged in, allow user to enter a name
+    echo '<label for="name">Your Name:</label>';
+    echo '<input type="text" name="name" required>';
 }
+echo '<label for="comment">Your Comment:</label>';
+echo '<textarea name="comment" rows="4" required></textarea>';
+echo '<button type="submit">Submit Comment</button>';
+echo '</form>';
+echo '</section>';
+
+
+
+
 
 // Rest of your code...
 

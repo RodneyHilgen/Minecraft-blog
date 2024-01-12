@@ -13,9 +13,7 @@
 
     <main>
     <?php
-
     include 'post.php'; 
-
 ?>
 
     </main>
