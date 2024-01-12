@@ -1,4 +1,6 @@
+<link rel="stylesheet" href="style.css">
 <?php
+
 // Retrieve post details (you can use a database for this in a real-world scenario)
 $post = [
     'title' => 'Exploring Minecraft Biomes',
