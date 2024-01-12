@@ -32,6 +32,7 @@ foreach ($posts as $post) {
 } 
 
 
+
 // Display comment form
 echo '<section id="comment-form">';
 echo '<h3>Add a Comment</h3>';
@@ -49,12 +50,6 @@ echo '<textarea name="comment" rows="4" required></textarea>';
 echo '<button type="submit">Submit Comment</button>';
 echo '</form>';
 echo '</section>';
-
-
-
-
-
-// Rest of your code...
 
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -89,7 +84,15 @@ if (file_exists($commentsFile)) {
     $comments = json_decode(file_get_contents($commentsFile), true);
 }
 
-
+// Display comments
+echo '<section id="comments">';
+echo '<h3>Comments</h3>';
+echo '<ul>';
+foreach ($comments as $comment) {
+    echo '<li><strong>' . htmlspecialchars($comment['name']) . ':</strong> ' . htmlspecialchars($comment['comment']) . '</li>';
+}
+echo '</ul>';
+echo '</section>';
 // Display a logout link
 echo '<p>Welcome, ' . $_SESSION['username'] . ' | <a href="logout.php">Logout</a></p>';
 
