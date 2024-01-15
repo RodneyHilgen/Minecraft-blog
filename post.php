@@ -22,16 +22,58 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Display blog posts
+// Check if the form for posting a blog is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['post_title']) && isset($_POST['post_content'])) {
+    // Get post details
+    $postTitle = $_POST['post_title'];
+    $postContent = $_POST['post_content'];
+
+    // For simplicity, let's just append the new post to an array
+    $posts = [];
+
+    // Check if posts file exists
+    $postsFile = 'posts.json';
+    if (file_exists($postsFile)) {
+        $posts = json_decode(file_get_contents($postsFile), true);
+    }
+
+    $posts[] = [
+        'title' => $postTitle,
+        'content' => $postContent,
+        'author' => $_SESSION['username'],
+    ];
+
+    // Save the updated posts array
+    file_put_contents($postsFile, json_encode($posts));
+}
+
+// Retrieve posts
+$posts = [];
+$postsFile = 'posts.json';
+if (file_exists($postsFile)) {
+    $posts = json_decode(file_get_contents($postsFile), true);
+}
+
+// Display posts
 foreach ($posts as $post) {
     echo '<article>';
-    echo '<h2>' . $post['title'] . '</h2>';
-    echo '<img src="' . $post['image'] . '" alt="' . $post['title'] . '">';
-    echo '<p>' . $post['content'] . '</p>';
+    echo '<h2>' . htmlspecialchars($post['title']) . '</h2>';
+    echo '<p>Author: ' . htmlspecialchars($post['author']) . '</p>';
+    echo '<p>' . nl2br(htmlspecialchars($post['content'])) . '</p>';
     echo '</article>';
-} 
+}
 
-
+// Display a form for posting a new blog
+echo '<section id="post-form">';
+echo '<h3>Post a Blog</h3>';
+echo '<form method="post" action="">';
+echo '<label for="post_title">Title:</label>';
+echo '<input type="text" name="post_title" required>';
+echo '<label for="post_content">Content:</label>';
+echo '<textarea name="post_content" rows="4" required></textarea>';
+echo '<button type="submit">Post Blog</button>';
+echo '</form>';
+echo '</section>';
 
 // Display comment form
 echo '<section id="comment-form">';
